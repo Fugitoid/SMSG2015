@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name Fugitoid's Steam Monster Summer Game 2015 Script 
 // @namespace https://github.com/Fugitoid/SMSG2015
-// @description A script that runs the Steam Monster Summer Game 2015 for you. Forked from https://github.com/SteamDatabase/steamSummerMinigame. 
-// @version 1.0.0
+// @description A script that runs the Steam Monster Summer Game 2015 for you. Forked from https://github.com/SteamDatabase/steamSummerMinigame v4.4.6 
+// @version 1.0.1
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
@@ -18,18 +18,19 @@
 // OPTIONS
 var clickRate = 20;
 var logLevel = 1; // 5 is the most verbose, 0 disables all log
-var minsLeft = 30; // Minutes left before daily reset
+
+var nukeBeforeReset = getPreferenceBoolean("nukeBeforeReset", true);
 
 var enableAutoClicker = getPreferenceBoolean("enableAutoClicker", true);
 
 var enableAutoUpgradeDPS = getPreferenceBoolean("enableAutoUpgradeDPS", false);
-var enableAutoUpgradeClick = getPreferenceBoolean("enableAutoUpgradeClick", true);
+var enableAutoUpgradeClick = getPreferenceBoolean("enableAutoUpgradeClick", false);
 
 var removeInterface = getPreferenceBoolean("removeInterface", true); // get rid of a bunch of pointless DOM
 var removeParticles = getPreferenceBoolean("removeParticles", true);
 var removeFlinching = getPreferenceBoolean("removeFlinching", true);
 var removeCritText = getPreferenceBoolean("removeCritText", false);
-var removeAllText = getPreferenceBoolean("removeAllText", true);
+var removeAllText = getPreferenceBoolean("removeAllText", false);
 var enableFingering = getPreferenceBoolean("enableFingering", true);
 var disableRenderer = getPreferenceBoolean("disableRenderer", true);
 
@@ -225,18 +226,33 @@ function firstRun() {
 	var titleActivity = document.querySelector( '.title_activity' );
 	var playersInGame = document.createElement( 'span' );
 	playersInGame.innerHTML = '<span id=\"players_in_game\">0/1500</span>&nbsp;Players in room<br>';
-
 	titleActivity.insertBefore(playersInGame, titleActivity.firstChild);
+	ELEMENTS.PlayersInGame = document.getElementById("players_in_game");
 
-	// Fix alignment
-	var activity = document.getElementById("activitylog");
-	activity.style.marginTop = "25px";
+	// Fix alignment of acvititylog and expand list of active abilities on hover
+	var abilities_extra_styles = document.createElement('style');
+	abilities_extra_styles.type = 'text/css';
+	abilities_extra_styles.textContent = '#activeinlanecontainer:hover {height:auto;background:rgba(50,50,50,0.9);padding-bottom:10px;position:absolute;z-index:1} #activeinlanecontainer:hover + #activitylog {margin-top:88px} #activitylog {margin-top: 20px}';
+	document.getElementsByTagName('head')[0].appendChild(abilities_extra_styles);
+
+	// space for option menu
+	var options_menu = document.querySelector(".game_options");
+	var sfx_btn = document.querySelector(".toggle_sfx_btn");
+	sfx_btn.style.marginLeft = "2px";
+	sfx_btn.style.marginRight = "7px";
+	sfx_btn.style.cssFloat = "right";
+	sfx_btn.style.styleFloat = "right";
+	var music_btn = document.querySelector(".toggle_music_btn");
+	music_btn.style.marginRight = "2px";
+	music_btn.style.cssFloat = "right";
+	music_btn.style.styleFloat = "right";
+	var leave_btn = document.querySelector(".leave_game_btn");
+	leave_btn.style.display = "none";
 
 	var info_box = document.querySelector(".leave_game_helper");
 	var pagecontent = document.querySelector(".pagecontent");
 	pagecontent.style.padding = "0";
-	pagecontent.appendChild(info_box);
-	document.querySelector(".game_options").style.overflow = "hidden";
+	options_menu.insertBefore(info_box, sfx_btn);
 
 	info_box.innerHTML = '<b>OPTIONS</b>' + ((typeof GM_info !==  "undefined") ? ' (v' + GM_info.script.version + ')' : '') + '<br>Settings marked with a <span style="color:#FF5252;font-size:22px;line-height:4px;vertical-align:bottom;">*</span> requires a refresh to take effect.<hr>';
 
@@ -249,6 +265,8 @@ function firstRun() {
 	info_box.style.color = "#ededed";
 	info_box.style.margin = "2px auto";
 	info_box.style.overflow = "auto";
+	info_box.style.cssFloat = "left";
+	info_box.style.styleFloat = "left";
 
 	var options1 = document.createElement("div");
 	options1.style["-moz-column-count"] = 2;
@@ -281,7 +299,7 @@ function firstRun() {
 	}
 
 	options2.appendChild(makeCheckBox("enableFingering", "Enable targeting pointer", enableFingering, handleEvent,true));
-	options2.appendChild(makeNumber("setMinsLeft", "Spam abilities before this many minutes to end of the game", "45px", minsLeft, 5, 59, updateEndGameCrazy));
+	options2.appendChild(makeCheckBox("nukeBeforeReset", "Spam abilities 1 hour before game end", nukeBeforeReset, handleEvent, true));
 	options2.appendChild(makeNumber("setLogLevel", "Change the log level (you shouldn't need to touch this)", "25px", logLevel, 0, 5, updateLogLevel));
 
 	info_box.appendChild(options2);
@@ -324,7 +342,7 @@ function isNearEndGame() {
 	var cHours = cTime.getUTCHours();
 	var cMins = cTime.getUTCMinutes();
 	var timeLeft = 60 - cMins;
-	if (cHours == 15 && timeLeft <= minsLeft) {
+	if (cHours == 15 && timeLeft <= 60) {
 		return true;
 	}
 	else {
@@ -715,12 +733,6 @@ function toggleAllText(event) {
 	}
 }
 
-function updateEndGameCrazy(event) {
-	if(event !== undefined) {
-		minsLeft = event.target.value;
-	}
-}
-
 function updateLogLevel(event) {
 	if(event !== undefined) {
 		logLevel = event.target.value;
@@ -854,10 +866,12 @@ function displayText(x, y, strText, color) {
 }
 
 function updatePlayersInGame() {
-	var totalPlayers =  s().m_rgLaneData[ 0 ].players +
-	s().m_rgLaneData[ 1 ].players +
-	s().m_rgLaneData[ 2 ].players;
-	document.getElementById("players_in_game").innerHTML = totalPlayers + "/1500";
+	var laneData = s().m_rgLaneData;
+	var totalPlayers =
+		laneData[ 0 ].players +
+		laneData[ 1 ].players +
+		laneData[ 2 ].players;
+	ELEMENTS.PlayersInGame.textContent = totalPlayers + "/1500";
 }
 
 function goToLaneWithBestTarget(level) {
@@ -1161,7 +1175,6 @@ function useAbilities(level)
 		}
 	}
 
-
 	// Morale Booster
 	if (canUseAbility(ABILITIES.MORALE_BOOSTER)) {
 		var numberOfWorthwhileEnemies = 0;
@@ -1290,14 +1303,14 @@ function useAbilities(level)
 	}
 
 	// Wormhole
-	if (isNearEndGame()) {
+	if (isNearEndGame() && nukeBeforeReset) {
 
 		// Check if Wormhole is purchased
 		if (tryUsingAbility(ABILITIES.WORMHOLE, true)) {
-			advLog('Less than ' + minsLeft + ' minutes for game to end. Triggering wormholes...', 2);
+			advLog('Less than 60 minutes for game to end. Triggering wormholes...', 2);
 		}
 		else if (tryUsingAbility(ABILITIES.THROW_MONEY_AT_SCREEN)) {
-			advLog('Less than ' + minsLeft + ' minutes for game to end. Throwing money at screen for no particular reason...', 2);
+			advLog('Less than 60 minutes for game to end. Throwing money at screen for no particular reason...', 2);
 		}
 	}
 
