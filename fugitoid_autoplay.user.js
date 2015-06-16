@@ -3,12 +3,12 @@
 // @shortname Fugitoid SMSG2015
 // @namespace https://github.com/Fugitoid/SMSG2015
 // @description A script that runs the Steam Monster Summer Game 2015 for you. Forked from https://github.com/SteamDatabase/steamSummerMinigame v4.4.6 
-// @version 1.2.1
+// @version 1.2.2
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
-// @updateURL https://raw.githubusercontent.com/Fugitoid/SMSG2015/master/fugitoid_autoplay.js
-// @downloadURL https://raw.githubusercontent.com/Fugitoid/SMSG2015/master/fugitoid_autoplay.js
+// @updateURL https://raw.githubusercontent.com/Fugitoid/SMSG2015/master/fugitoid_autoplay.user.js
+// @downloadURL https://raw.githubusercontent.com/Fugitoid/SMSG2015/master/fugitoid_autoplay.user.js
 // ==/UserScript==
 
 // IMPORTANT: Update the @version property above to a higher number such as 1.1 and 1.2 when you update the script! Otherwise, Tamper / Greasemonkey users will not update automatically.
