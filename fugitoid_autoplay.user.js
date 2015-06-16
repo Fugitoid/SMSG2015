@@ -1,9 +1,8 @@
 // ==UserScript==
 // @name Fugitoid's Steam Monster Summer Game 2015 Script 
-// @shortname Fugitoid SMSG2015
 // @namespace https://github.com/Fugitoid/SMSG2015
 // @description A script that runs the Steam Monster Summer Game 2015 for you. Forked from https://github.com/SteamDatabase/steamSummerMinigame v4.4.6 
-// @version 1.2.2
+// @version 1.2.4
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
@@ -255,7 +254,7 @@ function firstRun() {
 	pagecontent.style.padding = "0";
 	options_menu.insertBefore(info_box, sfx_btn);
 
-	info_box.innerHTML = '<b>OPTIONS</b>' + ((typeof GM_info !==  "undefined") ? ' (' + GM_info.script.shortname + ' ' + GM_info.script.version + ')' : '') + '<br>Settings marked with a <span style="color:#FF5252;font-size:22px;line-height:4px;vertical-align:bottom;">*</span> requires a refresh to take effect.<hr>';
+	info_box.innerHTML = '<b>OPTIONS</b>' + ((typeof GM_info !==  "undefined") ? ' (Fugitoid SMSG2015 v' + GM_info.script.version + ')' : '') + '<br>Settings marked with a <span style="color:#FF5252;font-size:22px;line-height:4px;vertical-align:bottom;">*</span> requires a refresh to take effect.<hr>';
 
 	// reset the CSS for the info box for aesthetics
 	info_box.className = "options_box";
