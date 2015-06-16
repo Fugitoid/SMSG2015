@@ -1107,8 +1107,8 @@ function useAbilities(level) {
 				}
 			}
 			
-			//If boss health is between 40% and 70%, napalm it!
-			if (enemyBossHealthPercent > 0.4 && enemyBossHealthPercent < 0.7) {
+			//If boss health is greater than 50%, napalm it!
+			if (enemyBossHealthPercent > 0.5) {
 				if (canUseAbility(ABILITIES.NAPALM)) {
 					advLog('Napalm available and used on boss.', 2);
 					triggerAbility(ABILITIES.NAPALM);
