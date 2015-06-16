@@ -2,7 +2,7 @@
 // @name Fugitoid's Steam Monster Summer Game 2015 Script 
 // @namespace https://github.com/Fugitoid/SMSG2015
 // @description A script that runs the Steam Monster Summer Game 2015 for you. Forked from https://github.com/SteamDatabase/steamSummerMinigame v4.4.6 
-// @version 1.0.2
+// @version 1.0.3
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
@@ -1133,25 +1133,22 @@ function useAbilities(level) {
 
 	// Cluster Bomb
 	if (canUseAbility(ABILITIES.CLUSTER_BOMB)) {
-	//Check lane has monsters to explode
-		enemyCount = 0;
-		enemySpawnerExists = false;
-		//Count each slot in lane
-		for (i = 0; i < 4; i++) {
-			enemy = s().GetEnemy(currentLane, i);
-			if (enemy) {
-				enemyCount++;
-				if (enemy.m_data.type === 0) {
-					enemySpawnerExists = true;
+		//Save cluster bomb for bosses
+		enemy = s().GetEnemy(s().m_rgPlayerData.current_lane, s().m_rgPlayerData.target);
+		//Check if current target is a boss
+		if (enemy && enemy.m_data.type == ENEMY_TYPE.BOSS) {	
+			//Check if it's a level is greater than speedThreshold and not a boss gold farming level
+			if (level > CONTROL.speedThreshold && level % CONTROL.rainingRounds != 0) {
+				enemyBossHealthPercent = enemy.m_flDisplayedHP / enemy.m_data.max_hp;
+				//If there is a boss and it's health is less than 25%, cluster bomb it!
+				if (enemyBossHealthPercent < 0.25) {
+					advLog('Cluster Bomb is purchased, cooled down, and needed. Trigger it.', 2);
+					triggerAbility(ABILITIES.CLUSTER_BOMB);
 				}
 			}
 		}
-		//Bombs away if spawner and 2+ other monsters
-		if (enemySpawnerExists && enemyCount >= 3) {
-			triggerAbility(ABILITIES.CLUSTER_BOMB);
-		}
 	}
-
+	
 	// Napalm
 	if (canUseAbility(ABILITIES.NAPALM)) {
 		//Check lane has monsters to burn
