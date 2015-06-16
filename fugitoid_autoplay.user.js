@@ -2,7 +2,7 @@
 // @name Fugitoid's Steam Monster Summer Game 2015 Script 
 // @namespace https://github.com/Fugitoid/SMSG2015
 // @description A script that runs the Steam Monster Summer Game 2015 for you. Forked from https://github.com/SteamDatabase/steamSummerMinigame v4.4.6 
-// @version 1.2.4
+// @version 1.2.5
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
@@ -1208,20 +1208,23 @@ function useAbilities(level) {
 
 	// Gold Rain
 	if (canUseAbility(ABILITIES.RAINING_GOLD)) {
+		// only use if the speed threshold has not been reached,
+		// or it's a designated gold round after the threshold
+		if (level < CONTROL.speedThreshold || level % CONTROL.rainingRounds === 0) {
+			enemy = s().GetEnemy(s().m_rgPlayerData.current_lane, s().m_rgPlayerData.target);
+			// check if current target is a boss, otherwise its not worth using the gold rain
+			if (enemy && enemy.m_data.type == ENEMY_TYPE.BOSS) {
+				enemyBossHealthPercent = enemy.m_flDisplayedHP / enemy.m_data.max_hp;
 	
-		enemy = s().GetEnemy(s().m_rgPlayerData.current_lane, s().m_rgPlayerData.target);
-		// check if current target is a boss, otherwise its not worth using the gold rain
-		if (enemy && enemy.m_data.type == ENEMY_TYPE.BOSS) {
-			enemyBossHealthPercent = enemy.m_flDisplayedHP / enemy.m_data.max_hp;
-
-			if (enemyBossHealthPercent >= 0.6) { // We want sufficient time for the gold rain to be applicable
-				// Gold Rain is purchased, cooled down, and needed. Trigger it.
-				advLog('Gold rain is purchased and cooled down, Triggering it on boss', 2);
-				triggerAbility(ABILITIES.RAINING_GOLD);
+				if (enemyBossHealthPercent >= 0.6) { // We want sufficient time for the gold rain to be applicable
+					// Gold Rain is purchased, cooled down, and needed. Trigger it.
+					advLog('Gold rain is purchased and cooled down, Triggering it on boss', 2);
+					triggerAbility(ABILITIES.RAINING_GOLD);
+				}
 			}
 		}
 	}
-
+	
 	// Metal Detector
 	if(canUseAbility(ABILITIES.METAL_DETECTOR)) {
 
