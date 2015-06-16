@@ -10,6 +10,7 @@
 // @downloadURL https://raw.githubusercontent.com/Fugitoid/SMSG2015/master/autojoin.user.js
 // ==/UserScript==
 
+/* Old code
 g_gameId = "41671";
 g_apiUrl = "http://steamapi-a.akamaihd.net/ITowerAttackMiniGameService/GetGameData/v0001/?gameid=" + g_gameId + "&include_stats=1";
 g_intervalId = 0;
@@ -22,3 +23,7 @@ function success(data) {
 }
 
 g_intervalId = setInterval(function(){ jQuery.getJSON(g_apiUrl, success) }, 5);
+*/
+
+
+javascript:setInterval(function({JoinGame(39756);$J('.btn_grey_white_innerfade').click();}, 1000); 
