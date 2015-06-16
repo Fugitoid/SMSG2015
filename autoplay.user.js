@@ -2,7 +2,7 @@
 // @name Fugitoid's Steam Monster Summer Game 2015 Script 
 // @namespace https://github.com/Fugitoid/SMSG2015
 // @description A script that runs the Steam Monster Summer Game 2015 for you. Forked from https://github.com/SteamDatabase/steamSummerMinigame v4.4.6 
-// @version 1.1.0
+// @version 1.2.0
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
@@ -1077,17 +1077,52 @@ function useAbilities(level) {
 		tryUsingAbility(ABILITIES.DECREASE_COOLDOWNS);
 	}
 
-	// Cripple Monster
-	if(canUseAbility(ABILITIES.CRIPPLE_MONSTER)) {
-		if (level > CONTROL.speedThreshold && level % CONTROL.rainingRounds !== 0 && level % 10 === 0) {
-			enemy = s().GetEnemy(s().m_rgPlayerData.current_lane, s().m_rgPlayerData.target);
-			if (enemy && enemy.m_data.type == ENEMY_TYPE.BOSS) {
-				enemyBossHealthPercent = enemy.m_flDisplayedHP / enemy.m_data.max_hp;
-				if (enemyBossHealthPercent>0.5){
-					advLog("Cripple Monster available and used on boss", 2);
+	// Kill bosses fast (Max Elemental, Cripple Monster, Cluster Bomb, Napalm and Nuke)
+	//Check if it's a level is greater than speedThreshold and not a boss gold farming level
+	if (level > CONTROL.speedThreshold && level % CONTROL.rainingRounds !== 0 && level % 10 === 0) {
+		enemy = s().GetEnemy(s().m_rgPlayerData.current_lane, s().m_rgPlayerData.target);
+		//Check if current target is a boss
+		if (enemy && enemy.m_data.type == ENEMY_TYPE.BOSS) {
+			// Use Max Elemental if available
+			if (tryUsingAbility(ABILITIES.MAX_ELEMENTAL_DAMAGE, true)) {
+				advLog('Max Elemental Damage is available and used on boss.', 2);
+			}
+			
+			//Calculate boss health percentage
+			enemyBossHealthPercent = enemy.m_flDisplayedHP / enemy.m_data.max_hp;
+			
+			//If boss health is less than 25%, cluster bomb it!
+			if (enemyBossHealthPercent < 0.25) {
+				if(canUseAbility(ABILITIES.CLUSTER_BOMB)) {
+					advLog("Cluster Bomb is available and used on boss.", 2);
+					triggerAbility(ABILITIES.CLUSTER_BOMB);
+				}
+			}
+			
+			// If boss health is between 30% and 60%, nuke it!
+			if (enemyBossHealthPercent > 0.3 && enemyBossHealthPercent < 0.6) {
+				if(canUseAbility(ABILITIES.TACTICAL_NUKE)) {
+					advLog("Tactical Nuke available and used on boss.", 2);
+					triggerAbility(ABILITIES.TACTICAL_NUKE);
+				}
+			}
+			
+			//If boss health is between 40% and 70%, napalm it!
+			if (enemyBossHealthPercent > 0.4 && enemyBossHealthPercent < 0.7) {
+				if (canUseAbility(ABILITIES.NAPALM)) {
+					advLog('Napalm available and used on boss.', 2);
+					triggerAbility(ABILITIES.NAPALM);
+				}
+			}
+			
+			//If boss health is greater than 50%, cripple it!
+			if (enemyBossHealthPercent > 0.5) {
+				if(canUseAbility(ABILITIES.CRIPPLE_MONSTER)) {
+					advLog("Cripple Monster available and used on boss.", 2);
 					triggerAbility(ABILITIES.CRIPPLE_MONSTER);
 				}
 			}
+			
 		}
 	}
 
@@ -1131,45 +1166,6 @@ function useAbilities(level) {
 		}
 	}
 
-	// Cluster Bomb
-	if (canUseAbility(ABILITIES.CLUSTER_BOMB)) {
-		//Save cluster bomb for bosses
-		enemy = s().GetEnemy(s().m_rgPlayerData.current_lane, s().m_rgPlayerData.target);
-		//Check if current target is a boss
-		if (enemy && enemy.m_data.type == ENEMY_TYPE.BOSS) {	
-			//Check if it's a level is greater than speedThreshold and not a boss gold farming level
-			if (level > CONTROL.speedThreshold && level % CONTROL.rainingRounds != 0) {
-				enemyBossHealthPercent = enemy.m_flDisplayedHP / enemy.m_data.max_hp;
-				//If there is a boss and it's health is less than 25%, cluster bomb it!
-				if (enemyBossHealthPercent < 0.25) {
-					advLog('Cluster Bomb is purchased, cooled down, and needed. Trigger it.', 2);
-					triggerAbility(ABILITIES.CLUSTER_BOMB);
-				}
-			}
-		}
-	}
-	
-	// Napalm
-	if (canUseAbility(ABILITIES.NAPALM)) {
-		//Check lane has monsters to burn
-		enemyCount = 0;
-		enemySpawnerExists = false;
-		//Count each slot in lane
-		for (i = 0; i < 4; i++) {
-			enemy = s().GetEnemy(currentLane, i);
-			if (enemy) {
-				enemyCount++;
-				if (enemy.m_data.type === 0) {
-					enemySpawnerExists = true;
-				}
-			}
-		}
-		//Burn them all if spawner and 2+ other monsters
-		if (enemySpawnerExists && enemyCount >= 3) {
-			triggerAbility(ABILITIES.NAPALM);
-		}
-	}
-
 	// Morale Booster
 	if (canUseAbility(ABILITIES.MORALE_BOOSTER)) {
 		var numberOfWorthwhileEnemies = 0;
@@ -1184,29 +1180,6 @@ function useAbilities(level) {
 			// Moral Booster is purchased, cooled down, and needed. Trigger it.
 			advLog('Moral Booster is purchased, cooled down, and needed. Trigger it.', 2);
 			triggerAbility(ABILITIES.MORALE_BOOSTER);
-		}
-	}
-
-	// Tactical Nuke
-	if(canUseAbility(ABILITIES.TACTICAL_NUKE)) {
-		//Check that the lane has a spawner and record it's health percentage
-			enemySpawnerExists = false;
-			enemySpawnerHealthPercent = 0.0;
-		//Count each slot in lane
-		for (i = 0; i < 4; i++) {
-			enemy = s().GetEnemy(currentLane, i);
-			if (enemy) {
-				if (enemy.m_data.type === 0) {
-					enemySpawnerExists = true;
-					enemySpawnerHealthPercent = enemy.m_flDisplayedHP / enemy.m_data.max_hp;
-				}
-			}
-		}
-
-		// If there is a spawner and it's health is between 60% and 30%, nuke it!
-		if (enemySpawnerExists && enemySpawnerHealthPercent < 0.6 && enemySpawnerHealthPercent > 0.3) {
-			advLog("Tactical Nuke is purchased, cooled down, and needed. Nuke 'em.", 2);
-			triggerAbility(ABILITIES.TACTICAL_NUKE);
 		}
 	}
 
@@ -1291,12 +1264,6 @@ function useAbilities(level) {
 		}
 	}
 
-	// Max Elemental
-	if (tryUsingAbility(ABILITIES.MAX_ELEMENTAL_DAMAGE, true)) {
-		// Max Elemental Damage is purchased, cooled down, and needed. Trigger it.
-		advLog('Max Elemental Damage is purchased and cooled down, triggering it.', 2);
-	}
-
 	// Wormhole
 	if (isNearEndGame() && nukeBeforeReset) {
 
@@ -1312,7 +1279,7 @@ function useAbilities(level) {
 	// Resurrect
 	if(level % 10 === 9 && tryUsingAbility(ABILITIES.RESURRECTION)) {
 		// Resurrect is purchased and we are using it.
-		advLog('Triggered Resurrect.');
+		advLog('Triggered Resurrect.', 2);
 	}
 }
 
