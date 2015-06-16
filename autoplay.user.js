@@ -1040,7 +1040,6 @@ function goToLaneWithBestTarget(level) {
 	}
 }
 
-
 function hasMaxCriticalOnLane() {
 	var goodLuckCharms = getActiveAbilityLaneCount(ABILITIES.GOOD_LUCK_CHARMS);
 	var crit = getActiveAbilityLaneCount(ABILITIES.CRIT);
@@ -1054,8 +1053,7 @@ function hasMaxCriticalOnLane() {
 	}
 }
 
-function useAbilities(level)
-{
+function useAbilities(level) {
 
 	var currentLane = s().m_nExpectedLane;
 
@@ -1457,7 +1455,7 @@ if(w.SteamDB_Minigame_Timer) {
 	w.clearInterval(w.SteamDB_Minigame_Timer);
 }
 
-w.SteamDB_Minigame_Timer = w.setInterval(function(){
+w.SteamDB_Minigame_Timer = w.setInterval(function() {
 	if (w.g_Minigame
 		&& s().m_bRunning
 		&& s().m_rgPlayerTechTree
@@ -1641,8 +1639,7 @@ function appendBreadcrumbsTitleInfo() {
 	ELEMENTS.RemainingTime = element;
 }
 
-function updateLevelInfoTitle(level)
-{
+function updateLevelInfoTitle(level) {
 	var exp_lvl = expectedLevel(level);
 	var rem_time = countdown(exp_lvl.remaining_time);
 
