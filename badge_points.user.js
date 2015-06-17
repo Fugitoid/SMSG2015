@@ -1,7 +1,6 @@
 // ==UserScript==
 // @name Fugitoid's SMSG2015 Badge Points buyer
 // @namespace https://github.com/Fugitoid/SMSG2015
-// @description A script that runs the Steam Monster Summer Game 2015 for you. Forked from https://github.com/SteamDatabase/steamSummerMinigame v4.4.6 
 // @version 2.0
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
