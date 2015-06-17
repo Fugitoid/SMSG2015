@@ -36,13 +36,13 @@ while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 50) {
 
 // Max out Raining Gold
 while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 10) {
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints(#purchase_abilityitem_17,1);
+	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_17,1);
 }
 
-// Treasure for what's left over, not needed for WH strat
-//while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 2) {
-//	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_22,1);
-//}
+// Treasure for what's left over
+while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 2) {
+	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_22,1);
+}
 
 // Pumped Up if there's 1 point left
 g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_19,1);
