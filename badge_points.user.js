@@ -17,8 +17,8 @@
 // Raining Gold = 10
 
 
-// Buy 1 LN per 50 WH until can't anymore
-while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 50) {
+// Buy 1 LN per 50 WH until around 100 badge points left
+while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 100) {
 	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_26,50);
 	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_27,1);
 }
@@ -35,12 +35,12 @@ while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 50) {
 //}
 
 // Max out Raining Gold
-while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 10) {
+while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 10) {
 	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_17,1);
 }
 
 // Treasure for what's left over
-while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 2) {
+while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 1) {
 	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_22,1);
 }
 
