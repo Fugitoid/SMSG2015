@@ -1,6 +1,7 @@
+
 //Buy 1 LN per 100 WH until can't anymore
 while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 5300) {
-	for (var i = 0; i < 100; i++) {
+	for (var i = 0; i < 25; i++) {
 		g_Minigame.m_CurrentScene.TrySpendBadgePoints($J('#purchase_abilityitem_26'));
 	}
 	g_Minigame.m_CurrentScene.TrySpendBadgePoints($J('#purchase_abilityitem_27'));
@@ -29,3 +30,12 @@ while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 2) {
 while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points == 1) {
 	g_Minigame.m_CurrentScene.TrySpendBadgePoints($J('#purchase_abilityitem_19'));
 }
+
+
+var bdg=[];
+for(var i=0; i<30;++i){bdg.push(17);}
+for(var i=0;i<30; ++i){bdg.push(18);}
+for(var i=0;i<10000;++i){bdg.push(26);} 
+g_Server.UseBadgePoints(function(res){},bdg);
+
+g_Server.UseBadgePoints.push(26);
