@@ -1,41 +1,49 @@
+// ==UserScript==
+// @name Fugitoid's SMSG2015 Badge Points buyer
+// @namespace https://github.com/Fugitoid/SMSG2015
+// @description A script that runs the Steam Monster Summer Game 2015 for you. Forked from https://github.com/SteamDatabase/steamSummerMinigame v4.4.6 
+// @version 2.0
+// @match *://steamcommunity.com/minigame/towerattack*
+// @match *://steamcommunity.com//minigame/towerattack*
+// @grant none
+// @updateURL https://raw.githubusercontent.com/Fugitoid/SMSG2015/master/badge_points.user.js
+// @downloadURL https://raw.githubusercontent.com/Fugitoid/SMSG2015/master/badge_points.user.js
+// ==/UserScript==
 
-//Buy 1 LN per 100 WH until can't anymore
-while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 5300) {
-	for (var i = 0; i < 25; i++) {
-		g_Minigame.m_CurrentScene.TrySpendBadgePoints($J('#purchase_abilityitem_26'));
-	}
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints($J('#purchase_abilityitem_27'));
+// Badge Item Costs
+//-------------------
+// Like New = 100
+// Wormhole = 100
+// Crit = 10
+// Raining Gold = 10
+
+
+// Buy 1 LN per 50 WH until can't anymore
+while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 50) {
+	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_26,50);
+	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_27,1);
 }
-//Buy 500 Raining Gold
-for (var i = 0; i < 500; i++) {
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints($J('#purchase_abilityitem_17'));
-}
-//Buy 30 Crit
-for (var i = 0; i < 30; i++) {
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints($J('#purchase_abilityitem_18'));
-}
-//Max out WH
-while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 100) {
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints($J('#purchase_abilityitem_26'));
-}
-//Max out Raining Gold
+
+// Buy 100 Raining Gold, not needed for WH strat
+//g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_17,100);
+
+// Buy 30 Crit, not needed for WH strat
+//g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_18,30);
+
+// Max out WH, not needed for WH strat
+//while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 100) {
+//	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_26,1);
+//}
+
+// Max out Raining Gold
 while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 10) {
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints($J('#purchase_abilityitem_17'));
-}
-//Treasure for what's left over
-while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 2) {
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints($J('#purchase_abilityitem_22'));
-}
-//Pumped Up if there's 1 point left
-while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points == 1) {
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints($J('#purchase_abilityitem_19'));
+	g_Minigame.m_CurrentScene.TrySpendBadgePoints(#purchase_abilityitem_17,1);
 }
 
+// Treasure for what's left over, not needed for WH strat
+//while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points >= 2) {
+//	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_22,1);
+//}
 
-var bdg=[];
-for(var i=0; i<30;++i){bdg.push(17);}
-for(var i=0;i<30; ++i){bdg.push(18);}
-for(var i=0;i<10000;++i){bdg.push(26);} 
-g_Server.UseBadgePoints(function(res){},bdg);
-
-g_Server.UseBadgePoints.push(26);
+// Pumped Up if there's 1 point left
+g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_19,1);
