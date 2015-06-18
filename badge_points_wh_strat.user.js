@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Fugitoid's SMSG2015 Badge Points buyer
 // @namespace https://github.com/Fugitoid/SMSG2015
-// @version 2.2
+// @version 2.3
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
@@ -22,15 +22,15 @@
 function waitForWelcomePanelLoad() {
 	var checkTicks = 20; // not very elegant but effective
 	var waitForWelcomePanelInterval = setInterval(function() {
-		var $welcomePanel = w.$J('.spend_badge_ponts_ctn');
+		var $welcomePanel = $J('.spend_badge_ponts_ctn');
 		var panelReady = !!($welcomePanel && $welcomePanel.length && $welcomePanel.is(':visible'));
 
 		if(panelReady) { // Got it! Tuning time!
 			window.document.dispatchEvent(new Event('event:welcomePanelVisible'));
 			clearInterval(waitForWelcomePanelInterval);
 		}
-		else if(w.g_Minigame && w.g_Minigame.CurrentScene() && w.g_Minigame.CurrentScene().m_rgPlayerTechTree
-				&& !w.g_Minigame.CurrentScene().m_rgPlayerTechTree.badge_points) { // techtree but no points
+		else if(g_Minigame && g_Minigame.CurrentScene() && g_Minigame.CurrentScene().m_rgPlayerTechTree
+				&& !g_Minigame.CurrentScene().m_rgPlayerTechTree.badge_points) { // techtree but no points
 			clearInterval(waitForWelcomePanelInterval);
 		}
 		else if(--checkTicks <= 0) { // give up
