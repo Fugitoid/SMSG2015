@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Fugitoid's SMSG2015 Badge Points buyer
 // @namespace https://github.com/Fugitoid/SMSG2015
-// @version 2.5
+// @version 2.7
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
@@ -26,9 +26,9 @@ function waitForWelcomePanelLoad() {
 		var panelReady = !!($welcomePanel && $welcomePanel.length && $welcomePanel.is(':visible'));
 
 		if(panelReady) { // Got it! Tuning time!
-			// Buy 1 LN per 50 WH until around 100 badge points left
+			// Buy 1 LN per 10 WH until around 100 badge points left
 			while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 100) {
-				g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_26,50);
+				g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_26,10);
 				g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_27,1);
 			}
 
