@@ -23,17 +23,6 @@ while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 100) {
 	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_27,1);
 }
 
-// Buy 100 Raining Gold, not needed for WH strat
-//g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_17,100);
-
-// Buy 30 Crit, not needed for WH strat
-//g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_18,30);
-
-// Max out WH, not needed for WH strat
-//while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 100) {
-//	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_26,1);
-//}
-
 // Max out Raining Gold
 while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 10) {
 	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_17,1);
