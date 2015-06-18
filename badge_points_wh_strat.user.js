@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Fugitoid's SMSG2015 Badge Points buyer
 // @namespace https://github.com/Fugitoid/SMSG2015
-// @version 2.4
+// @version 2.5
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
@@ -26,7 +26,25 @@ function waitForWelcomePanelLoad() {
 		var panelReady = !!($welcomePanel && $welcomePanel.length && $welcomePanel.is(':visible'));
 
 		if(panelReady) { // Got it! Tuning time!
-			//window.document.dispatchEvent(new Event('event:welcomePanelVisible'));
+			// Buy 1 LN per 50 WH until around 100 badge points left
+			while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 100) {
+				g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_26,50);
+				g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_27,1);
+			}
+
+			// Max out Raining Gold
+			while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 10) {
+				g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_17,1);
+			}
+
+			// Treasure for what's left over
+			while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 1) {
+				g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_22,1);
+			}
+
+			// Pumped Up if there's 1 point left
+			g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_19,1);
+
 			clearInterval(waitForWelcomePanelInterval);
 		}
 		else if(g_Minigame && g_Minigame.CurrentScene() && g_Minigame.CurrentScene().m_rgPlayerTechTree
@@ -40,22 +58,3 @@ function waitForWelcomePanelLoad() {
 }
 
 waitForWelcomePanelLoad();
-
-// Buy 1 LN per 50 WH until around 100 badge points left
-while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 100) {
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_26,50);
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_27,1);
-}
-
-// Max out Raining Gold
-while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 10) {
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_17,1);
-}
-
-// Treasure for what's left over
-while (g_Minigame.m_CurrentScene.m_rgPlayerTechTree.badge_points > 1) {
-	g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_22,1);
-}
-
-// Pumped Up if there's 1 point left
-g_Minigame.m_CurrentScene.TrySpendBadgePoints(purchase_abilityitem_19,1);
