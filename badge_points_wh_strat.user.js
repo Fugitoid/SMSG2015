@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Fugitoid's SMSG2015 Badge Points buyer
 // @namespace https://github.com/Fugitoid/SMSG2015
-// @version 2.1
+// @version 2.2
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
@@ -26,7 +26,7 @@ function waitForWelcomePanelLoad() {
 		var panelReady = !!($welcomePanel && $welcomePanel.length && $welcomePanel.is(':visible'));
 
 		if(panelReady) { // Got it! Tuning time!
-			//window.document.dispatchEvent(new Event('event:welcomePanelVisible'));
+			window.document.dispatchEvent(new Event('event:welcomePanelVisible'));
 			clearInterval(waitForWelcomePanelInterval);
 		}
 		else if(w.g_Minigame && w.g_Minigame.CurrentScene() && w.g_Minigame.CurrentScene().m_rgPlayerTechTree
