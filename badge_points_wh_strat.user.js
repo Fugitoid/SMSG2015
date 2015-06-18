@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Fugitoid's SMSG2015 Badge Points buyer
 // @namespace https://github.com/Fugitoid/SMSG2015
-// @version 2.0
+// @version 2.1
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
