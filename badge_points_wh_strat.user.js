@@ -5,8 +5,8 @@
 // @match *://steamcommunity.com/minigame/towerattack*
 // @match *://steamcommunity.com//minigame/towerattack*
 // @grant none
-// @updateURL https://raw.githubusercontent.com/Fugitoid/SMSG2015/master/badge_points.user.js
-// @downloadURL https://raw.githubusercontent.com/Fugitoid/SMSG2015/master/badge_points.user.js
+// @updateURL https://raw.githubusercontent.com/Fugitoid/SMSG2015/master/badge_points_wh_strat.user.js
+// @downloadURL https://raw.githubusercontent.com/Fugitoid/SMSG2015/master/badge_points_wh_strat.user.js
 // ==/UserScript==
 
 // Badge Item Costs
