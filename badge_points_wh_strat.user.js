@@ -26,7 +26,7 @@ function waitForWelcomePanelLoad() {
 		var panelReady = !!($welcomePanel && $welcomePanel.length && $welcomePanel.is(':visible'));
 
 		if(panelReady) { // Got it! Tuning time!
-			window.document.dispatchEvent(new Event('event:welcomePanelVisible'));
+			//window.document.dispatchEvent(new Event('event:welcomePanelVisible'));
 			clearInterval(waitForWelcomePanelInterval);
 		}
 		else if(g_Minigame && g_Minigame.CurrentScene() && g_Minigame.CurrentScene().m_rgPlayerTechTree
