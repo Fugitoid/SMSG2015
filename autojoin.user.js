@@ -29,5 +29,5 @@ g_intervalId = setInterval(function(){ jQuery.getJSON(g_apiUrl, success) }, 5);
 //javascript:setInterval(function(){JoinGame(#);$J('.btn_grey_white_innerfade').click();}, 1000); 
 
 
-var randomTimeout = Math.floor(Math.random() * 7000) + 1000
-setInterval(function(){JoinGame(43);$J('.btn_grey_white_innerfade').click();}, randomTimeout); 
+var randomTimeout = Math.floor(Math.random() * 7000) + 1000;
+setInterval(function(){$J('.btn_grey_white_innerfade';console.log(randomTimeout);JoinGame(43);).click();}, randomTimeout); 
