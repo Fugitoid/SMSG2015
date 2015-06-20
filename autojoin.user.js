@@ -30,4 +30,8 @@ g_intervalId = setInterval(function(){ jQuery.getJSON(g_apiUrl, success) }, 5);
 
 
 var randomTimeout = Math.floor(Math.random() * 7000) + 1000;
-setInterval(function(){$J('.btn_grey_white_innerfade';console.log(randomTimeout);JoinGame(43);).click();}, randomTimeout); 
+setInterval(function(){
+	$J('.btn_grey_white_innerfade';).click();
+	console.log(randomTimeout);
+	JoinGame(43);
+}, randomTimeout); 
